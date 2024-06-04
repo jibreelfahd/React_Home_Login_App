@@ -1,0 +1,10 @@
+.home {
+  width: 40rem;
+  max-width: 80%;
+  margin: 2rem auto;
+  padding: 3rem;
+}
+
+.home h1 {
+  text-align: center;
+}
