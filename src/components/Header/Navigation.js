@@ -1,23 +1,31 @@
 import React from "react";
 
-import styles from './Navigation.module.css';
+import styles from "./Navigation.module.css";
 
-const Navigation = () => {
+const Navigation = ({ onLogin, onLogout }) => {
   return (
     <nav className={styles.nav}>
       <ul>
-        <li>
-          <a href="/">Users</a>
-        </li>
-        <li>
-          <a href="/">Admin</a>
-        </li>
-        <li>
-          <button className={styles.button}>Logout</button>
-        </li>
+        {onLogin && (
+          <li>
+            <a href="/">Users</a>
+          </li>
+        )}
+        {onLogin && (
+          <li>
+            <a href="/">Admin</a>
+          </li>
+        )}
+        {onLogin && (
+          <li>
+            <button className={styles.button} onClick={onLogout}>
+              Logout
+            </button>
+          </li>
+        )}
       </ul>
     </nav>
-  )
+  );
 };
 
 export default Navigation;

@@ -1,23 +1,74 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "../UI/Card/Card";
 import Button from "../UI/Button/Button";
 
 import styles from "./Login.module.css";
 
-const Login = () => {
+const Login = (props) => {
+  const [enteredEmail, setEnteredEmail] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState("");
+  const [enteredPassword, setEnteredPassword] = useState("");
+  const [isPasswordValid, setIsPasswordValid] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  const emailChangeHandler = (event) => {
+    setEnteredEmail(event.target.value);
+
+    setIsFormValid(
+      event.target.value.includes("@") && enteredPassword.trim().length > 6
+    );
+  };
+
+  const passwordChangeHandler = (event) => {
+    setEnteredPassword(event.target.value);
+
+    setIsFormValid(
+      event.target.value.includes("@") && enteredPassword.trim().length > 6
+    );
+  };
+
+  const validateEmail = () => {
+    setIsEmailValid(enteredEmail.includes("@"));
+  };
+
+  const validatePassword = () => {
+    setIsPasswordValid(enteredEmail.trim().length > 6);
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    
+    props.onLogin(enteredEmail, enteredPassword);
+
+    setEnteredEmail("");
+    setEnteredPassword("");
+  };
+
   return (
     <Card className={styles.form__main}>
-      <form>
-        <div className={styles.form__control}>
+      <form onSubmit={submitHandler}>
+        <div className={`${styles.form__control} ${!isEmailValid === false ? styles.invalid: ''}`}>
           <label htmlFor="email">Email</label>
-          <input type="text" id="email" />
+          <input
+            type="text"
+            id="email"
+            value={enteredEmail}
+            onChange={emailChangeHandler}
+            onBlur={validateEmail}
+          />
         </div>
-        <div className={styles.form__control}>
+        <div className={`${styles.form__control} ${!isPasswordValid === false ? styles.invalid: ''}`}>
           <label htmlFor="passord">Password</label>
-          <input type="password" id="password" />
+          <input
+            type="password"
+            id="password"
+            value={enteredPassword}
+            onChange={passwordChangeHandler}
+            onBlur={validatePassword}
+          />
         </div>
         <div className={styles.action}>
-          <Button>Login</Button>
+          <Button type="submit" disabled={!isFormValid}>Login</Button>
         </div>
       </form>
     </Card>
