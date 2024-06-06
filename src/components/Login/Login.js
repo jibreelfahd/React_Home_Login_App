@@ -46,30 +46,32 @@ const Login = (props) => {
     isValid: null,
   });
 
-  // useEffect(() => {
-  //   const handler = setTimeout(() => {
-  //     setIsFormValid(
-  //       enteredEmail.includes("@") && enteredPassword.trim().length > 6
-  //     );
-  //   }, 500);
+  // @desc: useEffect hook for handling setIsFormValid to make sure the latest state snapshot is gotten
+  // to set the form validity to be valid
 
-  //   return () => {
-  //     clearTimeout(handler);
-  //   };
-  // }, [enteredEmail, enteredPassword]);
+  const { isValid: emailIsValid } = emailState;
+  const { isValid: passwordIsValid } = passwordState;
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setIsFormValid(
+        emailIsValid && passwordIsValid
+      );
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [emailIsValid, passwordIsValid]);
 
   // @desc: function upon email change
   const emailChangeHandler = (event) => {
     dispatchEmail({ type: "USER_INPUT", val: event.target.value });
-
-    setIsFormValid(event.target.value.includes("@") && passwordState.isValid);
   };
 
   // @desc: function upon password change
   const passwordChangeHandler = (event) => {
     dispatchPassword({ type: "USER_PASSWORD", val: event.target.value });
-
-    setIsFormValid(emailState.isValid && event.target.value.trim().length > 6);
   };
 
   // @desc: function to validate the user email
