@@ -2,8 +2,9 @@ import React, { useState, useEffect, useReducer, useContext } from "react";
 import Card from "../UI/Card/Card";
 import Button from "../UI/Button/Button";
 
-import styles from "./Login.module.css";
 import AuthContext from "../context/auth-context";
+import InputForm from "../UI/InputForm/InputForm";
+import styles from "./Login.module.css";
 
 // desc: reducer function for email reducer state
 const emailReducer = (state, action) => {
@@ -99,34 +100,24 @@ const Login = (props) => {
   return (
     <Card className={styles.form__main}>
       <form onSubmit={submitHandler}>
-        <div
-          className={`${styles.form__control} ${
-            emailState.isValid === false ? styles.invalid : ""
-          }`}
-        >
-          <label htmlFor="email">Email</label>
-          <input
-            type="text"
-            id="email"
-            value={emailState.value}
-            onChange={emailChangeHandler}
-            onBlur={validateEmail}
-          />
-        </div>
-        <div
-          className={`${styles.form__control} ${
-            passwordState.isValid === false ? styles.invalid : ""
-          }`}
-        >
-          <label htmlFor="passord">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={passwordState.value}
-            onChange={passwordChangeHandler}
-            onBlur={validatePassword}
-          />
-        </div>
+        <InputForm
+          id="email"
+          label="Email"
+          type="email"
+          isValid={emailIsValid}
+          value={emailState.value}
+          onBlur={validateEmail}
+          onChange={emailChangeHandler}
+        />
+        <InputForm
+          id="password"
+          label="Password"
+          type="password"
+          isValid={passwordIsValid}
+          value={passwordState.value}
+          onBlur={validatePassword}
+          onChange={passwordChangeHandler}
+        />
         <div className={styles.action}>
           <Button type="submit" disabled={!isFormValid}>
             Login

@@ -1,0 +1,45 @@
+.form__control {
+  margin: 1rem 0;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+}
+
+.form__control label,
+.form__control input {
+  display: block;
+}
+
+.form__control label {
+  font-weight: bold;
+  color: #464646;
+  margin-bottom: 0.5rem;
+  flex: 1;
+}
+
+.form__control input {
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font: inherit;
+  padding: 0.35rem;
+  flex: 3;
+}
+
+.form__control input:focus {
+  outline: none;
+  border-color: #4f005f;
+  background: #f6dbfc;
+}
+
+.form__control.invalid input {
+  border-color: red;
+  background: #fbdada;
+}
+
+@media (min-width: 768px) {
+  .form__control {
+    align-items: center;
+    flex-direction: row;
+  }
+
+}
