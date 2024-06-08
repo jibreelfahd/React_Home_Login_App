@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 import Card from "../UI/Card/Card";
 import Button from "../UI/Button/Button";
 
 import styles from "./Login.module.css";
+import AuthContext from "../context/auth-context";
 
 // desc: reducer function for email reducer state
 const emailReducer = (state, action) => {
@@ -49,14 +50,15 @@ const Login = (props) => {
   // @desc: useEffect hook for handling setIsFormValid to make sure the latest state snapshot is gotten
   // to set the form validity to be valid
 
+  //getting app wide context to lift state up
+  const authCtx = useContext(AuthContext);
+
   const { isValid: emailIsValid } = emailState;
   const { isValid: passwordIsValid } = passwordState;
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      setIsFormValid(
-        emailIsValid && passwordIsValid
-      );
+      setIsFormValid(emailIsValid && passwordIsValid);
     }, 500);
 
     return () => {
@@ -88,7 +90,7 @@ const Login = (props) => {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    props.onLogin(emailState.value, passwordState.value);
+    authCtx.onLogin(emailState.value, passwordState.value);
 
     emailState.value = "";
     passwordState.value = "";
