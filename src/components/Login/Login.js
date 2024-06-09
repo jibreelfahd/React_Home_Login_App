@@ -1,9 +1,17 @@
-import React, { useState, useEffect, useReducer, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useReducer,
+  useContext,
+  useRef,
+} from "react";
+
 import Card from "../UI/Card/Card";
 import Button from "../UI/Button/Button";
 
 import AuthContext from "../context/auth-context";
 import InputForm from "../UI/InputForm/InputForm";
+
 import styles from "./Login.module.css";
 
 // desc: reducer function for email reducer state
@@ -57,11 +65,16 @@ const Login = (props) => {
   const { isValid: emailIsValid } = emailState;
   const { isValid: passwordIsValid } = passwordState;
 
+  // @desc creating email and input ref to be able to use the focus external translator
+  const emailInputRef = useRef();
+  const passwordInputRef = useRef();
+
   useEffect(() => {
     const handler = setTimeout(() => {
       setIsFormValid(emailIsValid && passwordIsValid);
     }, 500);
 
+    // @CLEANUP FUNCTION
     return () => {
       clearTimeout(handler);
     };
@@ -91,16 +104,25 @@ const Login = (props) => {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    authCtx.onLogin(emailState.value, passwordState.value);
+    if (isFormValid) {
+      authCtx.onLogin(emailState.value, passwordState.value);
+    } else if (!emailIsValid) {
+      emailInputRef.current.focus();
+    } else {
+      passwordInputRef.current.focus();
+    }
 
-    emailState.value = "";
-    passwordState.value = "";
+    if (isFormValid) {
+      emailState.value = "";
+      passwordState.value = "";
+    }
   };
 
   return (
     <Card className={styles.form__main}>
       <form onSubmit={submitHandler}>
         <InputForm
+          ref={emailInputRef}
           id="email"
           label="Email"
           type="email"
@@ -110,6 +132,7 @@ const Login = (props) => {
           onChange={emailChangeHandler}
         />
         <InputForm
+          ref={passwordInputRef}
           id="password"
           label="Password"
           type="password"
@@ -119,9 +142,7 @@ const Login = (props) => {
           onChange={passwordChangeHandler}
         />
         <div className={styles.action}>
-          <Button type="submit" disabled={!isFormValid}>
-            Login
-          </Button>
+          <Button type="submit">Login</Button>
         </div>
       </form>
     </Card>
